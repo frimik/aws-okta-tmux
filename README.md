@@ -7,6 +7,10 @@ Wrapper that makes aws-okta cred-process communicate with the user via tmux pane
 - Place `aws-okta-tmux` somewhere on your `$PATH`.
 - Replace `aws-okta` with `aws-okta-tmux` in your `~/.aws/config`.
 
+## Screenshot
+
+![aws-okta-tmux.png](aws-okta-tmux.png)
+
 ## Examples
 
 Example `~/.aws/config` contents:
