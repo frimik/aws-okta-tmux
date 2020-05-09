@@ -1,0 +1,51 @@
+#!/bin/bash
+#
+# aws-okta-tmux
+#
+# Author: Mikael Fridh <frimik@gmail.com>
+#
+
+tmpdir=
+
+cleanup() {
+    if [ -n "$tmpdir" ]; then rm -rf "$tmpdir"; fi
+    if [ -n "$1" ]; then kill -$1 $$; fi
+}
+
+register_traps() {
+    trap 'cleanup' EXIT
+    trap 'cleanup HUP' HUP
+    trap 'cleanup TERM' TERM
+    trap 'cleanup INT' INT
+}
+
+_okta_tmux() {
+    okta_args=("$@")
+    tmpdir=$(mktemp -d -t "tmp.okta-tmux.XXXXXXXXXX")
+    pipe="${tmpdir}/pipe"
+    register_traps
+    mkfifo -m 0600 $pipe
+    _tmux_creds_ask $pipe "${okta_args[@]}"
+    _tmux_creds_read $pipe
+    exit 0
+}
+
+_tmux_creds_ask() {
+    pipe="$1"
+    shift
+    okta_args=("$*")
+    tmux split-window -h "aws-okta ${okta_args[@]} 1>\"${pipe}\""
+}
+
+_tmux_creds_read() {
+    cat $pipe
+}
+
+okta_args=("$@")
+
+if [[ -n "$TMUX" ]]; then
+    _okta_tmux "${okta_args[@]}"
+else
+    # plain fall through to aws-okta - to work if user wrapped aws-okta completely with this command.
+    aws-okta "${okta_args[@]}"
+fi
