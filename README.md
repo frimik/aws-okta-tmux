@@ -17,7 +17,6 @@ Example `~/.aws/config` contents:
 
 ```ini
 [default]
-# For some reason this isn't inherited to profiles below, hence why this line is repeated
 region = eu-west-1
 
 [profile okta]
