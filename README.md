@@ -54,3 +54,17 @@ credential_process = aws-okta-tmux cred-process fulhack_dev_admin
 credential_process = aws-okta-tmux cred-process fulhack_prod_admin
 
 ```
+
+### Details
+
+Now, there are only two profiles here which are usable by the *AWS CLI* - `dev` and `prod`.
+The others are for `aws-okta`, such as: `aws-okta login fulhack_dev_admin` to take you to the *AWS Console*.
+
+### EKS Cluster sync
+
+```sh
+AWS_PROFILE=dev aws eks update-kubeconfig --name cluster_name --alias cluster_name
+```
+
+If you do this, the configuration should end up with an `AWS_PROFILE` environment variable set in the Kubernetes configuration file and thus `kubectl` commands should be able to be run without any other tricks needed.
+
