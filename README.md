@@ -29,14 +29,6 @@ region = eu-west-1
 source_profile = okta
 credential_process = aws-okta-tmux cred-process okta
 
-[profile foo]
-source_profile = okta
-credential_process = aws-okta-tmux cred-process okta
-
-[profile bar]
-source_profile = okta
-credential_process = aws-okta-tmux cred-process okta
-
 # Specific target roles - usable by `aws-okta` directly only.
 # Actual AWS SDK roles defined later.
 [profile fulhack_dev_admin]
